@@ -1,0 +1,57 @@
+swagger: "2.0"
+info:
+  description: "This is the simple API for the Match Making service."
+  version: "1.0.0"
+  title: "MatchMaker"
+host: "localhost:5001"
+basePath: "/api/v1"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+- "text/plain"
+tags:
+- name: "message"
+  description: "A message to publish to a client"
+schemes:
+- "http"
+paths:
+  /messages:
+    x-swagger-router-controller: "messages"
+    post:
+      tags:
+      - "message"
+      summary: "Publish a message to the provided recipients"
+      operationId: "publishMessage"
+      parameters:
+      - name: "message"
+        in: "body"
+        description: "Message to route"
+        required: true
+        schema:
+          $ref: "#/definitions/Message"
+      responses:
+        204:
+          description: "Message successfully published"
+definitions:
+  Message:
+    type: "object"
+    properties:
+      source:
+        type: "string"
+        format: "uuid"
+      recipients:
+        type: "array"
+        items:
+          type: "string"
+          format: "uuid"
+      payload:
+        type: "string"
+parameters:
+  gameModeId:
+    name: "gameModeId"
+    in: "path"
+    description: "ID of game mode to query"
+    required: true
+    type: "string"
+    format: "uuid"
